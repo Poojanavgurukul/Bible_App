@@ -9,9 +9,7 @@ export default function Home({ navigation }) {
   const { setBookCode } = useContext(BibleContext);
   const onPress = (book_code) => {
     setBookCode(book_code);
-    navigation.navigate("Chapter", {
-      book_code: book_code,
-    });
+    navigation.navigate("Bible");
   };
   return (
     <View style={globalStyles.container}>
