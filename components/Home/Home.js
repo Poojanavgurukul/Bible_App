@@ -1,16 +1,31 @@
-import React from "react";
-import { View, Text } from "react-native";
-import BibleContextProvider from "../../contexts/bible";
+import React, { useContext } from "react";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { BibleContext } from "../../contexts/bible";
+import { BookContext } from "../../contexts/books";
 import { globalStyles } from "../../Styles/globalStyle";
-import Bible from "../Bible/Bible";
 
-export default function Home() {
+export default function Home({ navigation }) {
+  const { bookNames } = useContext(BookContext);
+  const { setBookCode } = useContext(BibleContext);
+  const onPress = (book_code) => {
+    setBookCode(book_code);
+    navigation.navigate("Chapter", {
+      book_code: book_code,
+    });
+  };
   return (
-    <View>
-      <Text style={globalStyles.heading}>Home</Text>
-      <BibleContextProvider>
-        <Bible />
-      </BibleContextProvider>
+    <View style={globalStyles.container}>
+      <FlatList
+        data={bookNames}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <TouchableOpacity onPress={() => onPress(item.book_code)}>
+            <View>
+              <Text style={globalStyles.listItem}>{item.long}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }
